@@ -12,7 +12,7 @@ class Rutas extends React.Component {
 	<Router history={hashHistory}>
 		<Route path='/' component={Main}>
 			<IndexRoute component={Home}/>
-			<Route path='singleProduct' component={SingleProduct}/>
+			<Route path='singleProduct/:id' component={SingleProduct}/>
 			<Route path='allProducts' component={AllProducts}/>
 		</Route>
 	</Router>

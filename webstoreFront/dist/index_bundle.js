@@ -13781,7 +13781,7 @@ var Rutas = function (_React$Component) {
 					_reactRouter.Route,
 					{ path: '/', component: _main2.default },
 					_react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default }),
-					_react2.default.createElement(_reactRouter.Route, { path: 'singleProduct', component: _singleProduct2.default }),
+					_react2.default.createElement(_reactRouter.Route, { path: 'singleProduct/:id', component: _singleProduct2.default }),
 					_react2.default.createElement(_reactRouter.Route, { path: 'allProducts', component: _allProducts2.default })
 				)
 			);
@@ -27584,16 +27584,47 @@ var SingleProduct = function (_React$Component) {
 	function SingleProduct(props) {
 		_classCallCheck(this, SingleProduct);
 
-		return _possibleConstructorReturn(this, (SingleProduct.__proto__ || Object.getPrototypeOf(SingleProduct)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (SingleProduct.__proto__ || Object.getPrototypeOf(SingleProduct)).call(this, props));
+
+		_this.state = {
+			product: null
+		};
+		return _this;
 	}
 
 	_createClass(SingleProduct, [{
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			this.getProduct();
+		}
+	}, {
+		key: 'getProduct',
+		value: function getProduct() {
+			var _this2 = this;
+
+			var url = 'http:localhost:3000/products/' + this.props.params.id;
+			fetch(url).then(function (response) {
+				response.json().then(function (data) {
+					_this2.setState({
+						product: data
+					});
+				});
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			if (this.state.product === null) {
+				return _react2.default.createElement(
+					'div',
+					null,
+					'El producto se esta "cargando"...'
+				);
+			}
 			return _react2.default.createElement(
 				'div',
 				null,
-				_react2.default.createElement(_product2.default, null),
+				_react2.default.createElement(_product2.default, { product: this.state.product }),
 				_react2.default.createElement(_form2.default, null),
 				_react2.default.createElement(_button2.default, null),
 				_react2.default.createElement(_comments2.default, null)
@@ -27639,6 +27670,8 @@ var _button = __webpack_require__(251);
 
 var _button2 = _interopRequireDefault(_button);
 
+var _reactRouter = __webpack_require__(216);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27653,16 +27686,49 @@ var AllProducts = function (_React$Component) {
 	function AllProducts(props) {
 		_classCallCheck(this, AllProducts);
 
-		return _possibleConstructorReturn(this, (AllProducts.__proto__ || Object.getPrototypeOf(AllProducts)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (AllProducts.__proto__ || Object.getPrototypeOf(AllProducts)).call(this, props));
+
+		_this.state = {
+			products: null
+		};
+		return _this;
 	}
 
 	_createClass(AllProducts, [{
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			this.getProducts();
+		}
+	}, {
+		key: 'getProducts',
+		value: function getProducts() {
+			var _this2 = this;
+
+			var url = 'http:localhost:3000/products';
+			fetch(url).then(function (response) {
+				response.json().then(function (data) {
+					_this2.setState({
+						products: data
+					});
+				});
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			if (this.state.products === null) {
+				return _react2.default.createElement(
+					'div',
+					null,
+					'Los productos se estan cargando'
+				);
+			}
 			return _react2.default.createElement(
 				'div',
 				null,
-				_react2.default.createElement(_ProductPreview2.default, null),
+				this.state.products.map(function (producto, i) {
+					return _react2.default.createElement(_ProductPreview2.default, { product: producto, key: producto._id });
+				}),
 				_react2.default.createElement(_form2.default, null),
 				_react2.default.createElement(_button2.default, null)
 			);
@@ -27795,7 +27861,7 @@ var Navbar = function (_React$Component) {
 					_react2.default.createElement(
 						'button',
 						{ type: 'submit' },
-						'Single Products'
+						'Back'
 					)
 				)
 			);
@@ -27824,6 +27890,8 @@ var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = __webpack_require__(216);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27844,24 +27912,32 @@ var ProductPreview = function (_React$Component) {
 	_createClass(ProductPreview, [{
 		key: 'render',
 		value: function render() {
+			var product = this.props.product;
 			return _react2.default.createElement(
 				'div',
 				null,
-				_react2.default.createElement('img', { id: '', src: '' }),
 				_react2.default.createElement(
-					'h2',
-					{ id: 'productArtist' },
-					'Artist'
-				),
-				_react2.default.createElement(
-					'h3',
-					{ id: 'productAlbum' },
-					'Album'
-				),
-				_react2.default.createElement(
-					'p',
-					{ id: 'productPrice' },
-					'Price'
+					_reactRouter.Link,
+					{ to: '/singleProduct/' + product._id },
+					_react2.default.createElement('img', { src: product.imgUrl }),
+					_react2.default.createElement(
+						'h2',
+						null,
+						'Artist: ',
+						product.artist
+					),
+					_react2.default.createElement(
+						'h3',
+						null,
+						'Album: ',
+						product.album
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						'Price: ',
+						product.price
+					)
 				)
 			);
 		}
@@ -28146,35 +28222,43 @@ var Product = function (_React$Component) {
 	function Product(props) {
 		_classCallCheck(this, Product);
 
-		return _possibleConstructorReturn(this, (Product.__proto__ || Object.getPrototypeOf(Product)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Product.__proto__ || Object.getPrototypeOf(Product)).call(this, props));
+
+		_this.props.product;
+		return _this;
 	}
 
 	_createClass(Product, [{
 		key: 'render',
 		value: function render() {
+			var product = this.props.product;
 			return _react2.default.createElement(
 				'div',
 				null,
-				_react2.default.createElement('img', { id: '', src: '' }),
+				_react2.default.createElement('img', { id: '', src: product.imgUrl }),
 				_react2.default.createElement(
 					'h2',
-					{ id: 'productArtist' },
-					'Artist'
+					null,
+					'Artist: ',
+					product.artist
 				),
 				_react2.default.createElement(
 					'h3',
-					{ id: 'productAlbum' },
-					'Album'
+					null,
+					'Album: ',
+					product.album
 				),
 				_react2.default.createElement(
 					'p',
-					{ id: 'productPrice' },
-					'Price'
+					null,
+					'Price: ',
+					product.price
 				),
 				_react2.default.createElement(
 					'p',
-					{ id: 'productDescription' },
-					'Description'
+					null,
+					'Description: ',
+					product.description
 				)
 			);
 		}
