@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import Watch from '../components/watch.jsx';
-// import Buttons from '../components/buttons.jsx';
-// import Input from '../components/input.jsx';
+import ProductPreview from '../components/ProductPreview.jsx';
+import Form from '../components/form.jsx';
+import Button from '../components/button.jsx';
 
 class AllProducts extends React.Component {
 	constructor(props) {
@@ -12,7 +12,9 @@ class AllProducts extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>all products</h1>
+				<ProductPreview />
+				<Form />
+				<Button />
 			</div>
 		);
 	}

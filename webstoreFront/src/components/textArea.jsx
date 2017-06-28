@@ -7,7 +7,7 @@ class TextArea extends React.Component {
 	render() {
 		return (
 			<div>
-				<textarea id='textArea'>Enter text here...</textarea>
+				<textarea>Enter text here...</textarea>
 			</div>
 		)
 	}
