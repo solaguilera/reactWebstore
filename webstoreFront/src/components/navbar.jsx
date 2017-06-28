@@ -9,8 +9,9 @@ class Navbar extends React.Component {
 		return (
 			<div>
 				<h2>Navbar</h2>
-				<IndexLink to='/' activeClassName='active'>Home</IndexLink>
-				<Link to='/AllProducts' activeClassName='active'>All Products</Link>
+				<IndexLink to='/' activeClassName='active'><button type='submit'>Home</button></IndexLink>
+				<Link to='/allProducts' activeClassName='active'><button type='submit'>All Products</button></Link>
+				<Link to='/singleProduct' activeClassName='active'><button type='submit'>Single Products</button></Link>
 				{/* <Link to='/CreateProduct' activeClassName='active'>Create Product</Link> */}
 			</div>
 		 );

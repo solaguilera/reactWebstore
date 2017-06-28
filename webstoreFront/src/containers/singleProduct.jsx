@@ -13,8 +13,6 @@ class SingleProduct extends React.Component {
 		return (
 			<div>
 				<h1>single product</h1>
-				<Input />
-				<Button />
 			</div>
 		);
 	}

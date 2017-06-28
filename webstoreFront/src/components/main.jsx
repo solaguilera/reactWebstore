@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Watch from '../components/watch.jsx';
-import Buttons from '../components/buttons.jsx';
-import Input from '../components/input.jsx';
+// import Watch from './components/watch.jsx';
+import Navbar from './navbar.jsx'
+import Buttons from './buttons.jsx';
+// import Input from './input.jsx';
 
 class Main extends React.Component {
 	constructor(props) {
